@@ -1,0 +1,135 @@
+[
+    {
+        "id": "85c4c355.cb4c7",
+        "type": "tab",
+        "label": "1. Unicorn HAT Test",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "b3689408.5c96a8",
+        "type": "tab",
+        "label": "2. Audio Visualiser",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "290cdc36.3f5524",
+        "type": "websocket-listener",
+        "z": "",
+        "path": "/",
+        "wholemsg": "false"
+    },
+    {
+        "id": "8a59b64.4347448",
+        "type": "websocket in",
+        "z": "b3689408.5c96a8",
+        "name": "",
+        "server": "290cdc36.3f5524",
+        "client": "",
+        "x": 90,
+        "y": 60,
+        "wires": [
+            [
+                "23f0fefd.5d4952"
+            ]
+        ]
+    },
+    {
+        "id": "23f0fefd.5d4952",
+        "type": "json",
+        "z": "b3689408.5c96a8",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 270,
+        "y": 60,
+        "wires": [
+            [
+                "2dea33c4.19610c"
+            ]
+        ]
+    },
+    {
+        "id": "2dea33c4.19610c",
+        "type": "function",
+        "z": "b3689408.5c96a8",
+        "name": "LED",
+        "func": "var UnicornHatHD = new global.get('unihd');\nvar uni = new UnicornHatHD('/dev/spidev0.0');\n \nlet red = 255;\nlet green = 0;\nlet blue = 0;\n\nuni.setBrightness(1.0);\n\nfor(var i = 0; i<16; i++){\n    for(var j = 0; j<msg.payload.data[i].row; j++){\n        uni.setPixel(i, j, red, green, blue);\n    }\n}\n\nvar flipHorizontal = true;\nvar flipVertical = false;\n \nuni.show(flipHorizontal, flipVertical);\n\n//node.warn(msg.payload.data[0].row);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 470,
+        "y": 60,
+        "wires": [
+            [
+                "b681d25d.c900e"
+            ]
+        ]
+    },
+    {
+        "id": "b681d25d.c900e",
+        "type": "debug",
+        "z": "b3689408.5c96a8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 650,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "31132c34.16ad64",
+        "type": "inject",
+        "z": "85c4c355.cb4c7",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 140,
+        "y": 60,
+        "wires": [
+            [
+                "798a9438.1c090c"
+            ]
+        ]
+    },
+    {
+        "id": "798a9438.1c090c",
+        "type": "function",
+        "z": "85c4c355.cb4c7",
+        "name": "",
+        "func": "var UnicornHatHD = new global.get('unihd');\nvar uni = new UnicornHatHD('/dev/spidev0.0');\n\nuni.setBrightness(0);\n \nuni.setPixel(0, 0, 255, 0, 0);\nuni.setPixel(1, 0, 0, 255, 0);\nuni.setPixel(2, 0, 0, 0, 255);\n \nvar flipHorizontal = false;\nvar flipVertical = false;\n \nuni.show(flipHorizontal, flipVertical);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 310,
+        "y": 60,
+        "wires": [
+            [
+                "2046f2d2.9e960e"
+            ]
+        ]
+    },
+    {
+        "id": "2046f2d2.9e960e",
+        "type": "debug",
+        "z": "85c4c355.cb4c7",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 470,
+        "y": 60,
+        "wires": []
+    }
+]
